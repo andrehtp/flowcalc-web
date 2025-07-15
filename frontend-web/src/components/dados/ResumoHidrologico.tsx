@@ -138,22 +138,34 @@ export const ResumoHidrologico = ({ dados }: ResumoHidrologicoProps) => {
                   {formatarDataBR(linha.dataInicial)}
                 </td>
                 <td className="border px-2 py-1">
-                  {linha.vazaoMedia ?? '-'}
+                  {linha.vazaoMedia !== undefined && linha.vazaoMedia !== null
+                    ? linha.vazaoMedia.toFixed(2)
+                    : '-'}
                 </td>
                 <td className="border px-2 py-1">
-                  {linha.vazaoMaxima ?? '-'}
+                  {linha.vazaoMaxima !== undefined && linha.vazaoMaxima !== null
+                    ? linha.vazaoMaxima.toFixed(2)
+                    : '-'}
                 </td>
                 <td className="border px-2 py-1">
-                  {linha.vazaoMinima ?? '-'}
+                  {linha.vazaoMinima !== undefined && linha.vazaoMinima !== null
+                    ? linha.vazaoMinima.toFixed(2)
+                    : '-'}
                 </td>
                 <td className="border px-2 py-1">
-                  {linha.vazaoMediaReal ?? '-'}
+                  {linha.vazaoMediaReal !== undefined && linha.vazaoMediaReal !== null
+                    ? linha.vazaoMediaReal.toFixed(2)
+                    : '-'}
                 </td>
                 <td className="border px-2 py-1">
-                  {linha.vazaoMaximaReal ?? '-'}
+                  {linha.vazaoMaximaReal !== undefined && linha.vazaoMaximaReal !== null
+                    ? linha.vazaoMaximaReal.toFixed(2)
+                    : '-'}
                 </td>
                 <td className="border px-2 py-1">
-                  {linha.vazaoMinimaReal ?? '-'}
+                  {linha.vazaoMinimaReal !== undefined && linha.vazaoMinimaReal !== null
+                    ? linha.vazaoMinimaReal.toFixed(2)
+                    : '-'}
                 </td>
                 <td className="border px-2 py-1">
                   {linha.nivelConsistencia ?? '-'}
