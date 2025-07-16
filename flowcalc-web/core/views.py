@@ -1,13 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import TbEstacao, TbResumoMensal
+from .models import TbEstacao, TbResumoMensal, TbVazaoDiaria
 from django.conf import settings
-from .utils import montar_cabecalho, verify_recaptcha
+from django.db.models import Q
+from .utils import montar_cabecalho, verify_recaptcha, calcular_curva
 from .serializers import (
     ConsultaEstacaoSerializer,
     LinhaResumoSerializer,
     ResumoHidrologicoSerializer,
+    CurvaPermanenciaInputSerializer
 )
 
 # Endpoint: Consulta de estação (usado no EstacaoForm e nos filtros do DadosPage)
@@ -132,4 +134,40 @@ class ResumoHidrologicoView(APIView):
         "resumosMensais": resumos_serializados
         }
 
+        return Response(resp)
+    
+
+class CurvaPermanenciaView(APIView):
+    def post(self, request):
+        serializer = CurvaPermanenciaInputSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        data = serializer.validated_data
+
+        # 1. Busca a estação
+        estacao = TbEstacao.objects.filter(codigo_estacao=data["codigoEstacao"]).first()
+        if not estacao:
+            return Response({"error": "Estação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # 2. Monta o filtro para os resumos mensais
+        filtro_resumo = Q(co_estacao=estacao)
+        if data.get("dataInicio"):
+            filtro_resumo &= Q(data_inicial__gte=data["dataInicio"])
+        if data.get("dataFim"):
+            filtro_resumo &= Q(data_inicial__lte=data["dataFim"])
+        if data.get("nivelConsistencia"):
+            filtro_resumo &= Q(nivel_consistencia=data["nivelConsistencia"])
+
+        resumos = TbResumoMensal.objects.filter(filtro_resumo).order_by("data_inicial")
+        vazoes_mensais = [r.vazao_media_real for r in resumos if r.vazao_media_real is not None]
+
+        # 3. Busca as vazões diárias associadas aos resumos filtrados
+        resumos_ids = [r.pk for r in resumos]
+        vazoes_diarias = TbVazaoDiaria.objects.filter(co_resumo_mensal_id__in=resumos_ids).order_by("data_vazao")
+        vazoes_diarias_lista = [v.vazao for v in vazoes_diarias if v.vazao is not None]
+        
+        resp = {
+            "resumoMensal": calcular_curva(vazoes_mensais),
+            "vazaoDiaria": calcular_curva(vazoes_diarias_lista)
+        }
         return Response(resp)

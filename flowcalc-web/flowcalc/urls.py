@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import ConsultaEstacaoView, ResumoHidrologicoView
+from core.views import ConsultaEstacaoView, ResumoHidrologicoView, CurvaPermanenciaView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/consulta-estacao/', ConsultaEstacaoView.as_view(), name='consulta_estacao'),
     path('api/resumo-hidrologico/', ResumoHidrologicoView.as_view(), name='resumo_hidrologico'),
+    path('api/curva-permanencia/', CurvaPermanenciaView.as_view(), name='curva_permanencia'),
 ]

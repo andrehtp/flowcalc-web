@@ -46,3 +46,10 @@ class ResumoHidrologicoSerializer(serializers.Serializer):
     dataInicio = serializers.DateTimeField(required=False, allow_null=True)
     dataFim = serializers.DateTimeField(required=False, allow_null=True)
     nivelConsistencia = serializers.IntegerField(required=False, allow_null=True)
+
+
+class CurvaPermanenciaInputSerializer(serializers.Serializer):
+    codigoEstacao = serializers.IntegerField()
+    dataInicio = serializers.DateField(required=False, allow_null=True)
+    dataFim = serializers.DateField(required=False, allow_null=True)
+    nivelConsistencia = serializers.IntegerField(required=False, allow_null=True)
