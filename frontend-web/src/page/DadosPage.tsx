@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ResumoHidrologico } from '../components/dados/ResumoHidrologico';
 import { CurvaPermanencia } from '../components/dados/CurvaPermanencia';
-import { CalculoVazaoMinima } from '../components/dados/Minimas';
 import { Mapa } from '../components/dados/Mapa';
 
 // Componente principal da página de dados
@@ -180,12 +179,6 @@ export const DadosPage = () => {
             >
               Curva de Permanência
             </button>
-            <button
-              onClick={() => setAbaAtiva('minima')}
-              className={`text-lg font-semibold pb-2 ${abaAtiva === 'minima' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'}`}
-            >
-              Minimas
-            </button>
           </div>
 
           {/* Renderização condicional das abas */}
@@ -198,7 +191,6 @@ export const DadosPage = () => {
               nivelConsistencia={nivelConsistencia}
             />
           )}
-          {abaAtiva === 'minima' && <CalculoVazaoMinima />}
 
         </div>
       </div>

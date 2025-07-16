@@ -32,9 +32,9 @@ load_dotenv(dotenv_path= ROOT_DIR / '.env')
 SECRET_KEY = 'django-insecure-tgop+x=wq*lo!hb56*+dqwg+#pj1@6v(2i!6rlbcy(zen5bm&8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True   
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://localhost:5173']
 
 
 # Application definition

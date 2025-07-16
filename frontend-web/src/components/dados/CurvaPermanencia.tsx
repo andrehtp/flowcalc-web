@@ -24,7 +24,7 @@ export const CurvaPermanencia = ({ codigoEstacao, dataInicio, dataFim, nivelCons
   const [resultado, setResultado] = useState<any>(null);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/curva-permanencia', {
+    fetch('http://localhost:8080/api/curva-permanencia/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -43,6 +43,16 @@ export const CurvaPermanencia = ({ codigoEstacao, dataInicio, dataFim, nivelCons
   const chartData = dados?.curva ?? [];
   const qmap = useMemo(() => dados?.qmap ?? {}, [dados]);
   const classes = dados?.classes ?? [];
+
+  const classesDesc = useMemo(() =>
+  classes
+    .slice()                                // cópia imutável
+    .reverse()                              // inverte a ordem
+    .map((c: any, idx: number) => ({        // renumera
+      ...c,
+      classe: idx + 1                       // 1, 2, 3, …
+    }))
+, [classes]);
 
   useEffect(() => {
   if (resultado) {
@@ -184,7 +194,7 @@ export const CurvaPermanencia = ({ codigoEstacao, dataInicio, dataFim, nivelCons
         </tr>
       </thead>
       <tbody>
-        {classes.map((linha: any) => (
+        {classesDesc.map((linha: any) => (
           <tr key={linha.classe} className="border-t">
             <td className="px-2 py-1 font-medium">{linha.classe}</td>
             <td className="px-2 py-1">{linha.li.toFixed(2)}</td>
