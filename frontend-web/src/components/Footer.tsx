@@ -13,22 +13,13 @@ export const Footer = () => (
       </a>{' '}
       |{' '}
       <a
-        href="https://www.linkedin.com/in/cassiano-matias-luzzietti-a4871421b/"
+        href="https://www.linkedin.com/in/gabrielsodrem"
         target="_blank"
         rel="noopener noreferrer"
         className="hover:text-blue-300 no-underline"
       >
-        Cassiano Luzzietti
+        Gabriel Sodré
       </a>{' '}
-      |{' '}
-      <a
-        href="https://www.linkedin.com/in/jeanpelissoli/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-blue-300 no-underline"
-      >
-        Jean Pelissoli
-      </a>
     </p>
   </footer>
 );
