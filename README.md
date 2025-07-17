@@ -93,6 +93,7 @@ Este projeto está licenciado sob a licença MIT.
 
 ## 👨‍💻 Autor
 
-Desenvolvido por André Tavares, com adaptações para Django feitas por contribuidores da comunidade.
+Desenvolvido por André Tavares e Gabriel Sodré, com adaptações para Django feitas por contribuidores da comunidade.
 
 GitHub: [@andrehtp](https://github.com/andrehtp)
+GitHub: [@GabrielSM99](https://github.com/GabrielSM99)
