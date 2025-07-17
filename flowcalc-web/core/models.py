@@ -5,17 +5,9 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+from django.conf import settings
 from django.db import models
 
-
-class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
-    class Meta:
-        managed = False
-        db_table = 'django_migrations'
 
 
 class TbCidade(models.Model):
@@ -24,8 +16,8 @@ class TbCidade(models.Model):
     nome = models.CharField(max_length=44)
 
     class Meta:
-        managed = False
         db_table = 'tb_cidade'
+        managed = not settings.LEGACY_DB
 
 
 class TbConfigEtl(models.Model):
@@ -34,9 +26,8 @@ class TbConfigEtl(models.Model):
     data_atualizacao_inicial = models.DateField(blank=True, null=True, db_comment='Indica a data base do ETL, deve buscar dados posteriores � essa data')
 
     class Meta:
-        managed = False
         db_table = 'tb_config_etl'
-
+        managed = not settings.LEGACY_DB
 
 class TbEstacao(models.Model):
     co_seq_estacao = models.BigAutoField(primary_key=True)
@@ -53,18 +44,16 @@ class TbEstacao(models.Model):
     ultima_atualizacao = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tb_estacao'
-
+        managed = not settings.LEGACY_DB
 
 class TbEstado(models.Model):
     co_seq_estado = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=44)
 
     class Meta:
-        managed = False
         db_table = 'tb_estado'
-
+        managed = not settings.LEGACY_DB
 
 class TbReportEtl(models.Model):
     co_seq_report_etl = models.BigAutoField(primary_key=True)
@@ -73,9 +62,8 @@ class TbReportEtl(models.Model):
     ds_erro = models.CharField(max_length=128, blank=True, null=True, db_comment='Descricao de um poss�vel erro em um processo de etl')
 
     class Meta:
-        managed = False
         db_table = 'tb_report_etl'
-
+        managed = not settings.LEGACY_DB
 
 class TbResumoMensal(models.Model):
     co_seq_resumo_mensal = models.BigAutoField(primary_key=True)
@@ -92,9 +80,8 @@ class TbResumoMensal(models.Model):
     vazao_minima_real = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tb_resumo_mensal'
-
+        managed = not settings.LEGACY_DB
 
 class TbRio(models.Model):
     co_seq_rio = models.BigAutoField(primary_key=True)
@@ -102,19 +89,18 @@ class TbRio(models.Model):
     descricao = models.CharField(max_length=88, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tb_rio'
-
+        managed = not settings.LEGACY_DB
 
 class TbRioCidade(models.Model):
-    pk = models.CompositePrimaryKey('co_rio', 'co_cidade')
+    pk = None
     co_rio = models.ForeignKey(TbRio, models.DO_NOTHING, db_column='co_rio')
     co_cidade = models.ForeignKey(TbCidade, models.DO_NOTHING, db_column='co_cidade')
 
     class Meta:
-        managed = False
         db_table = 'tb_rio_cidade'
-
+        managed = not settings.LEGACY_DB
+        unique_together = (('co_rio', 'co_cidade'),)
 
 class TbVazaoDiaria(models.Model):
     co_seq_vazao_diaria = models.BigAutoField(primary_key=True)
@@ -124,5 +110,5 @@ class TbVazaoDiaria(models.Model):
     vazao_status = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'tb_vazao_diaria'
+        managed = not settings.LEGACY_DB

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 
-const DISABLE_CAPTCHA = true; // Desabilita o reCAPTCHA para desenvolvimento
+const DISABLE_CAPTCHA = false; // Desabilita o reCAPTCHA para desenvolvimento
 
 
 

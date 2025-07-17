@@ -11,6 +11,7 @@ from .serializers import (
     ResumoHidrologicoSerializer,
     CurvaPermanenciaInputSerializer
 )
+from core.etl.etl_service import atualizar_estacao
 
 # Endpoint: Consulta de estação (usado no EstacaoForm e nos filtros do DadosPage)
 class ConsultaEstacaoView(APIView):
@@ -56,12 +57,19 @@ class ConsultaEstacaoView(APIView):
             captcha_token = data.get("captchaToken")
             if not captcha_token or not verify_recaptcha(captcha_token):
                 return Response({"error": "Captcha inválido"}, status=400)
-            
 
+        # Fazer ETL
+        '''
+        try:
+            atualizar_estacao(data["codEstacao"])  # roda migrate se necessário e popula os dados
+        except Exception as e:
+            return Response({"error": f"Falha ao atualizar dados da estação: {str(e)}"}, status=500)
+        '''
         estacao = TbEstacao.objects.filter(codigo_estacao=data["codEstacao"]).first()
         if not estacao:
             return Response({"error": "Estação não encontrada"}, status=status.HTTP_404_NOT_FOUND)
-
+        
+    
         # Monta cabeçalho
         cabecalho = montar_cabecalho(estacao)
 

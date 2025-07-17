@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-DISABLE_CAPTCHA = True  # Disable reCAPTCHA for development purposes
+DISABLE_CAPTCHA = False  # Disable reCAPTCHA for development purposes
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -96,6 +96,7 @@ DATABASES = {
     }
 }
 
+LEGACY_DB = os.getenv("LEGACY_DB", "False").lower() == "true"
 
 
 
@@ -104,6 +105,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # ReCAPTCHA settings
 RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
+
 
 
 # Password validation
